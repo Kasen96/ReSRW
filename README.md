@@ -9,3 +9,6 @@ ReSoW is a simple application that read data from the disk, process the data (so
 * Read/write block size equal to the size of a single record in the file, that is a floating point number.
 * gcc compiler optimization turned off
 
+# LICENSE
+
+GLWT(Good Luck With That) Public License
