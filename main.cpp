@@ -1,8 +1,12 @@
 // ReSoW
+
 #include <random>
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <numeric>
+#include <algorithm>
+#include <vector>
 
 using std::cout;
 using std::endl;
@@ -10,11 +14,48 @@ using std::string;
 
 float generateRand(int);
 void createDataset(int, const string&);
+float getAvg(const std::vector<float>&);
+float getMax(const std::vector<float>&);
+float getMin(const std::vector<float>&);
 
 int main()
 {
     createDataset(20, "DataSet.txt");
     return 0;
+}
+
+/**
+ * get the average value.
+ * @param dataset
+ * @return float
+ */
+float getAvg(const std::vector<float>& dataset)
+{
+    return std::accumulate(dataset.cbegin(), dataset.cend(), 0.0f) / dataset.size();
+}
+
+/**
+ * get the max value.
+ * maxPosition: iterator to the greatest element.
+ * @param dataset
+ * @return float
+ */
+float getMax(const std::vector<float>& dataset)
+{
+    auto maxPosition = std::max_element(dataset.cbegin(), dataset.cend());
+    return *maxPosition;
+}
+
+/**
+ * get the min value.
+ * minPosition: iterator to the smallest element.
+ * @param dataset
+ * @return float
+ */
+float getMin(const std::vector<float>& dataset)
+{
+    auto minPosition = std::min_element(dataset.cbegin(), dataset.cend());
+    return *minPosition;
 }
 
 /**
