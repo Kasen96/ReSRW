@@ -18,7 +18,7 @@ using std::vector;
 
 float generateRand(int);
 void createDataset(int, const string&);
-void writeDataset(const vector<float>&, int, const string&);
+void writeDataset(const vector<float>&, int, const string&, float, float, float);
 vector<float> loadDataset(int, int, const string&);
 void selectionSort(vector<float>&);
 float getAvg(const vector<float>&);
@@ -33,16 +33,8 @@ int main()
     {
         cout << i << endl;
     }
-    cout << endl;
-    cout << "Avg: " << getAvg(temp) << endl;
-    cout << "Max: " << getMax(temp) << endl;
-    cout << "Min: " << getMin(temp) << endl;
-    cout << endl;
     selectionSort(temp);
-    for (float i : temp)
-    {
-        cout << i << endl;
-    }
+    writeDataset(temp, 10, "dataset_result.txt", getAvg(temp), getMax(temp), getMin(temp));
     return 0;
 }
 
@@ -134,7 +126,7 @@ void createDataset(int size, const string& filename)
  * @param bufferSize
  * @param filename
  */
-void writeDataset(const vector<float>& dataset, int bufferSize, const string& filename)
+void writeDataset(const vector<float>& dataset, int bufferSize, const string& filename, float avg, float max, float min)
 {
     vector<char> buf(bufferSize);
     std::ofstream file;
@@ -145,6 +137,9 @@ void writeDataset(const vector<float>& dataset, int bufferSize, const string& fi
 
     if (file.is_open())
     {
+        file << "Avg: " << avg << endl;
+        file << "Max: " << max << endl;
+        file << "Min: " << min << endl;
         for (float i : dataset)
         {
             file << i << endl;
