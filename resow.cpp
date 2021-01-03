@@ -39,11 +39,19 @@ int main(int argc, char* argv[])
     cout << "===========" << endl;
 
     // create the dataset
-    cout << "Generating the dataset..." << endl;
-    createDataset(dataset_size, filename);
-    cout << "Dataset is generated." << endl;
+    std::ifstream f(filename);
+    if (!f)
+    {
+        cout << "Generating the dataset..." << endl;
+        createDataset(dataset_size, filename);
+        cout << "Dataset is generated." << endl;
 
-    cout << "===========" << endl;
+        cout << "===========" << endl;
+    }
+    else
+    {
+        f.close();
+    }
 
     // load the dataset
     cout << "Loading the dataset..." << endl;
