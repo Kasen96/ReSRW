@@ -18,6 +18,7 @@ using std::vector;
 float generateRand(int);
 void createDataset(int, const string&);
 void writeDataset(const vector<float>&, int, const string&);
+vector<float> loadDataset(int, int, const string&);
 float getAvg(const vector<float>&);
 float getMax(const vector<float>&);
 float getMin(const vector<float>&);
@@ -25,6 +26,14 @@ float getMin(const vector<float>&);
 int main()
 {
     createDataset(20, "DataSet.txt");
+    vector<float> temp = loadDataset(20, 10, "DataSet.txt");
+    for (float i : temp)
+    {
+        cout << i << endl;
+    }
+    cout << "Avg: " << getAvg(temp) << endl;
+    cout << "Max: " << getMax(temp) << endl;
+    cout << "Min: " << getMin(temp) << endl;
     return 0;
 }
 
@@ -137,4 +146,37 @@ void writeDataset(const vector<float>& dataset, int bufferSize, const string& fi
     {
         cerr << "Can not open the file!" << endl;
     }
+}
+
+/**
+ * load the dataset and define the buffer size.
+ * @param datesetSize
+ * @param bufferSize
+ * @param filename
+ * @return vector<float>
+ */
+vector<float> loadDataset(int datesetSize, int bufferSize, const string& filename)
+{
+    vector<float> dateset;
+    vector<char> buf(bufferSize);
+    std::ifstream file;
+    float temp = 0.0f;
+
+    file.open(filename, ios::in);
+    file.rdbuf()->pubsetbuf(buf.data(), bufferSize);
+
+    if (file.is_open())
+    {
+        for (int i = 0; i < datesetSize; ++i)
+        {
+            file >> temp;
+            dateset.push_back(temp);
+        }
+        file.close();
+    }
+    else
+    {
+        cerr << "Can not open the file!" << endl;
+    }
+    return dateset;
 }
