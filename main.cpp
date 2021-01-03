@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 #include <vector>
+#include <chrono>
 
 using std::cout;
 using std::endl;
@@ -28,10 +29,118 @@ float getMin(const vector<float>&);
 
 int main(int argc, char* argv[])
 {
-    createDataset(20, "dataset.txt");
-    vector<float> temp = loadDataset(20, 10, "dataset.txt");
-    insertSort(temp);
-    writeDataset(temp, 10, "dataset_result.txt", getAvg(temp), getMax(temp), getMin(temp));
+    // <dataset size><buffer size><filename>
+    int dataset_size = std::stoi(argv[1]);
+    int buffer_size = std::stoi(argv[2]);
+    string filename = string(argv[3]) + ".txt";
+    string result_filename = string(argv[3]) + "_result.txt";
+    string algorithm_name;
+
+    cout << "===========" << endl;
+
+    // create the dataset
+    cout << "Generating the dataset..." << endl;
+    createDataset(dataset_size, filename);
+    cout << "Dataset is generated." << endl;
+
+    cout << "===========" << endl;
+
+    // load the dataset
+    cout << "Loading the dataset..." << endl;
+    auto start_load = std::chrono::high_resolution_clock::now();
+    vector<float> temp = loadDataset(dataset_size, buffer_size, filename);
+    auto end_load = std::chrono::high_resolution_clock::now();
+    auto load_duration = std::chrono::duration_cast<std::chrono::microseconds>(end_load - start_load).count();
+    cout << "Finish loading the dataset." << endl;
+    string load_duration_time = std::to_string(load_duration);
+    cout << "It takes " << load_duration_time << " microseconds to load file." << endl;
+
+    cout << "===========" << endl;
+
+    // account avg value
+    cout << "Accounting the average value..." << endl;
+    auto start_avg = std::chrono::high_resolution_clock::now();
+    float avg = getAvg(temp);
+    auto end_avg = std::chrono::high_resolution_clock::now();
+    auto avg_duration = std::chrono::duration_cast<std::chrono::microseconds>(end_avg - start_avg).count();
+    cout << "Finish accounting the average value." << endl;
+    string avg_duration_time = std::to_string(avg_duration);
+    cout << "It takes " << avg_duration_time << " microseconds to account the average value." << endl;
+
+    cout << "===========" << endl;
+
+    // find the max number
+    cout << "Finding the max number..." << endl;
+    auto start_max = std::chrono::high_resolution_clock::now();
+    float max = getMax(temp);
+    auto end_max = std::chrono::high_resolution_clock::now();
+    auto max_duration = std::chrono::duration_cast<std::chrono::microseconds>(end_max - start_max).count();
+    cout << "Finish finding the max number." << endl;
+    string max_duration_time = std::to_string(max_duration);
+    cout << "It takes " << max_duration_time << " microseconds to find the max number." << endl;
+
+    cout << "===========" << endl;
+
+    // find the min number
+    cout << "Finding the min number..." << endl;
+    auto start_min = std::chrono::high_resolution_clock::now();
+    float min = getMin(temp);
+    auto end_min = std::chrono::high_resolution_clock::now();
+    auto min_duration = std::chrono::duration_cast<std::chrono::microseconds>(end_min - start_min).count();
+    cout << "Finish finding the min number." << endl;
+    string min_duration_time = std::to_string(min_duration);
+    cout << "It takes " << min_duration_time << " microseconds to find the min number." << endl;
+
+    cout << "===========" << endl;
+
+    // algorithm
+    cout << "Sorting the dataset..." << endl;
+    auto start_sort = std::chrono::high_resolution_clock::now();
+    algorithm_name = "std::sort";
+    std::sort(temp.begin(), temp.end()); // a highly efficient sorting algorithm based on the quick sort in the STL
+    // algorithm_name = "Selection sort";
+    // selectionSort(temp);
+    // algorithm_name = "Insertion sort";
+    // insertSort(temp);
+    auto end_sort = std::chrono::high_resolution_clock::now();
+    auto sort_duration = std::chrono::duration_cast<std::chrono::microseconds>(end_sort - start_sort).count();
+    cout << "Finish sorting the dataset." << endl;
+    string sort_duration_time = std::to_string(sort_duration);
+    cout << "It takes " << sort_duration_time << " microseconds to sort the dataset." << endl;
+
+    cout << "===========" << endl;
+
+    // write the dataset
+    cout << "Writing the dataset..." << endl;
+    auto start_write = std::chrono::high_resolution_clock::now();
+    writeDataset(temp, buffer_size, result_filename, avg, max, min);
+    auto end_write = std::chrono::high_resolution_clock::now();
+    auto write_duration = std::chrono::duration_cast<std::chrono::microseconds>(end_write - start_write).count();
+    cout << "Finish writing the dataset." << endl;
+    string write_duration_time = std::to_string(write_duration);
+    cout << "It takes " << write_duration_time << " microseconds to write the dataset." << endl;
+
+    // write time statistics
+    std::ofstream file;
+    file.open("time_result.txt", ios::out | ios::app);
+    if (file.is_open())
+    {
+        file << "Dataset Size: " << dataset_size << endl;
+        file << "Buffer Size:  " << buffer_size << endl;
+        file << "Using " << algorithm_name << " ..." << endl;
+        file << "Load Time:    " << load_duration_time << " μs" << endl;
+        file << "Avg Time:     " << avg_duration_time << " μs" << endl;
+        file << "Max Time:     " << max_duration_time << " μs" << endl;
+        file << "Min Time:     " << min_duration_time << " μs" << endl;
+        file << "Sort Time:    " << sort_duration_time << " μs" << endl;
+        file << "Write Time:   " << write_duration_time << " μs" << endl;
+        file << "==============" << endl;
+        file.close();
+    }
+    else
+    {
+        cerr << "Can not open the file!" << endl;
+    }
 
     return 0;
 }
