@@ -10,13 +10,17 @@
 
 using std::cout;
 using std::endl;
+using std::cerr;
+using std::ios;
 using std::string;
+using std::vector;
 
 float generateRand(int);
 void createDataset(int, const string&);
-float getAvg(const std::vector<float>&);
-float getMax(const std::vector<float>&);
-float getMin(const std::vector<float>&);
+void writeDataset(const vector<float>&, int, const string&);
+float getAvg(const vector<float>&);
+float getMax(const vector<float>&);
+float getMin(const vector<float>&);
 
 int main()
 {
@@ -29,7 +33,7 @@ int main()
  * @param dataset
  * @return float
  */
-float getAvg(const std::vector<float>& dataset)
+float getAvg(const vector<float>& dataset)
 {
     return std::accumulate(dataset.cbegin(), dataset.cend(), 0.0f) / dataset.size();
 }
@@ -40,7 +44,7 @@ float getAvg(const std::vector<float>& dataset)
  * @param dataset
  * @return float
  */
-float getMax(const std::vector<float>& dataset)
+float getMax(const vector<float>& dataset)
 {
     auto maxPosition = std::max_element(dataset.cbegin(), dataset.cend());
     return *maxPosition;
@@ -52,7 +56,7 @@ float getMax(const std::vector<float>& dataset)
  * @param dataset
  * @return float
  */
-float getMin(const std::vector<float>& dataset)
+float getMin(const vector<float>& dataset)
 {
     auto minPosition = std::min_element(dataset.cbegin(), dataset.cend());
     return *minPosition;
@@ -89,14 +93,48 @@ void createDataset(int size, const string& filename)
      */
 
     std::ofstream file;
-    file.open(filename, std::ios::out | std::ios::trunc);
+    file.open(filename, ios::out | ios::trunc);
 
-    for (int i = 0; i < size; ++i)
+    if (file.is_open())
     {
-        // create a floating point random number between 1 and 100
-        file << generateRand(100) << endl;
+        for (int i = 0; i < size; ++i)
+        {
+            // create a floating point random number between 1 and 100
+            file << generateRand(100) << endl;
+        }
+        file.close();
     }
-
-    file.close();
+    else
+    {
+        cerr << "Can not open the file!" << endl;
+    }
 }
 
+/**
+ * write the dataset, and define the buffer size.
+ * @param dataset
+ * @param bufferSize
+ * @param filename
+ */
+void writeDataset(const vector<float>& dataset, int bufferSize, const string& filename)
+{
+    vector<char> buf(bufferSize);
+    std::ofstream file;
+
+    file.open(filename, ios::out | ios::app);
+    // set buffer
+    file.rdbuf()->pubsetbuf(buf.data(), bufferSize);
+
+    if (file.is_open())
+    {
+        for (float i : dataset)
+        {
+            file << i << endl;
+        }
+        file.close();
+    }
+    else
+    {
+        cerr << "Can not open the file!" << endl;
+    }
+}
