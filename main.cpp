@@ -6,6 +6,7 @@
 #include <fstream>
 #include <numeric>
 #include <algorithm>
+#include <utility>
 #include <vector>
 
 using std::cout;
@@ -19,21 +20,29 @@ float generateRand(int);
 void createDataset(int, const string&);
 void writeDataset(const vector<float>&, int, const string&);
 vector<float> loadDataset(int, int, const string&);
+void selectionSort(vector<float>&);
 float getAvg(const vector<float>&);
 float getMax(const vector<float>&);
 float getMin(const vector<float>&);
 
 int main()
 {
-    createDataset(20, "DataSet.txt");
-    vector<float> temp = loadDataset(20, 10, "DataSet.txt");
+    createDataset(20, "dataset.txt");
+    vector<float> temp = loadDataset(20, 10, "dataset.txt");
     for (float i : temp)
     {
         cout << i << endl;
     }
+    cout << endl;
     cout << "Avg: " << getAvg(temp) << endl;
     cout << "Max: " << getMax(temp) << endl;
     cout << "Min: " << getMin(temp) << endl;
+    cout << endl;
+    selectionSort(temp);
+    for (float i : temp)
+    {
+        cout << i << endl;
+    }
     return 0;
 }
 
@@ -179,4 +188,24 @@ vector<float> loadDataset(int datesetSize, int bufferSize, const string& filenam
         cerr << "Can not open the file!" << endl;
     }
     return dateset;
+}
+
+/**
+ * selection sort, O(n^2).
+ * using the swap in <utility>.
+ * @param dataset
+ */
+void selectionSort(vector<float>& dataset)
+{
+    for (size_t i = 0; i < dataset.size(); ++i)
+    {
+        size_t min = i;
+        for (size_t j = i + 1; j < dataset.size(); ++j)
+        {
+            if (dataset[j] < dataset[min]) {
+                min = j;
+            }
+        }
+        std::swap(dataset[i], dataset[min]);
+    }
 }
