@@ -21,20 +21,18 @@ void createDataset(int, const string&);
 void writeDataset(const vector<float>&, int, const string&, float, float, float);
 vector<float> loadDataset(int, int, const string&);
 void selectionSort(vector<float>&);
+void insertSort(vector<float>&);
 float getAvg(const vector<float>&);
 float getMax(const vector<float>&);
 float getMin(const vector<float>&);
 
-int main()
+int main(int argc, char* argv[])
 {
     createDataset(20, "dataset.txt");
     vector<float> temp = loadDataset(20, 10, "dataset.txt");
-    for (float i : temp)
-    {
-        cout << i << endl;
-    }
-    selectionSort(temp);
+    insertSort(temp);
     writeDataset(temp, 10, "dataset_result.txt", getAvg(temp), getMax(temp), getMin(temp));
+
     return 0;
 }
 
@@ -131,7 +129,7 @@ void writeDataset(const vector<float>& dataset, int bufferSize, const string& fi
     vector<char> buf(bufferSize);
     std::ofstream file;
 
-    file.open(filename, ios::out | ios::app);
+    file.open(filename, ios::out | ios::trunc);
     // set buffer
     file.rdbuf()->pubsetbuf(buf.data(), bufferSize);
 
@@ -186,8 +184,8 @@ vector<float> loadDataset(int datesetSize, int bufferSize, const string& filenam
 }
 
 /**
- * selection sort, O(n^2).
- * using the swap in <utility>.
+ * selection sort, avg time complexity: O(n^2).
+ * using std::swap.
  * @param dataset
  */
 void selectionSort(vector<float>& dataset)
@@ -197,10 +195,30 @@ void selectionSort(vector<float>& dataset)
         size_t min = i;
         for (size_t j = i + 1; j < dataset.size(); ++j)
         {
-            if (dataset[j] < dataset[min]) {
+            if (dataset[j] < dataset[min])
+            {
                 min = j;
             }
         }
         std::swap(dataset[i], dataset[min]);
+    }
+}
+
+/**
+ * insertion sort, avg time complexity: O(n^2).
+ * @param dataset
+ */
+void insertSort(vector<float>& dataset)
+{
+    for (size_t i = 1; i < dataset.size(); ++i)
+    {
+        float node = dataset[i];
+        size_t j = i - 1;
+        while (j >= 0 && node < dataset[j])
+        {
+            dataset[j + 1] = dataset[j];
+            --j;
+        }
+        dataset[j + 1] = node;
     }
 }
