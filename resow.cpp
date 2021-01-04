@@ -29,11 +29,17 @@ float getMin(const vector<float>&);
 
 int main(int argc, char* argv[])
 {
-    // <dataset size><buffer size><filename>
+    // <dataset size><buffer size><filename><algorithm mode>
+    if (argc != 5)
+    {
+        cerr << "Usage: ReSoW <dataset size><buffer size><filename><algorithm mode>" << endl;
+    }
+
     int dataset_size = std::stoi(argv[1]);
     int buffer_size = std::stoi(argv[2]);
     string filename = string(argv[3]) + ".txt";
     string result_filename = string(argv[3]) + "_result.txt";
+    string algorithm_mode = argv[4];
     string algorithm_name;
 
     cout << "===========" << endl;
@@ -104,12 +110,21 @@ int main(int argc, char* argv[])
     // algorithm
     cout << "Sorting the dataset..." << endl;
     auto start_sort = std::chrono::high_resolution_clock::now();
-    algorithm_name = "std::sort";
-    std::sort(temp.begin(), temp.end()); // a highly efficient sorting algorithm based on the quick sort in the STL
-    // algorithm_name = "Selection sort";
-    // selectionSort(temp);
-    // algorithm_name = "Insertion sort";
-    // insertSort(temp);
+    if (algorithm_mode == "qs")
+    {
+         algorithm_name = "std::sort";
+         std::sort(temp.begin(), temp.end()); // a highly efficient sorting algorithm based on the quick sort in the STL
+    }
+    else if (algorithm_mode == "ss")
+    {
+         algorithm_name = "selection sort";
+         selectionSort(temp);
+    }
+    else if (algorithm_mode == "is")
+    {
+         algorithm_name = "insertion sort";
+         insertSort(temp);
+    }
     auto end_sort = std::chrono::high_resolution_clock::now();
     auto sort_duration = std::chrono::duration_cast<std::chrono::microseconds>(end_sort - start_sort).count();
     cout << "Finish sorting the dataset." << endl;

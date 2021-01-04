@@ -1,6 +1,18 @@
 # ReSoW
 
-ReSoW 是一个简单的应用程序，它可以从磁盘上读取数据，对数据进行处理（排序），然后将数据写回磁盘上。
+ReSoW 是一个简单的性能测试程序，它可以从磁盘上读取数据，对数据进行处理（排序），然后将数据写回磁盘上。
+
+# 用法
+
+``` shell
+ReSoW (dataset size)(buffer size)(filename)(algorithm mode: qs|ss|is)
+```
+
+# 生成文件
+
+1. Dataset: filename.txt
+2. Sorted Dataset: filename_result.txt
+3. Time result: time_result.txt
 
 # LICENSE
 
