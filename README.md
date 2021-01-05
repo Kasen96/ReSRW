@@ -14,6 +14,11 @@ ReSoW (dataset size)(buffer size)(filename)(algorithm mode: qs|ss|is)
 2. Sorted Dataset: filename_result.txt
 3. Time result: time_result.txt
 
+# 优化方式
+
+1. 开启 / 关闭编译器优化
+2. 选择不同算法
+
 # LICENSE
 
                GLWT(Good Luck With That) Public License
