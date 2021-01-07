@@ -1,4 +1,4 @@
-// ReSoW
+// ReSRW
 
 #include <random>
 #include <iostream>
@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
     // <dataset size><buffer size><filename><algorithm mode>
     if (argc != 5)
     {
-        cerr << "Usage: ReSoW <dataset size><buffer size><filename><algorithm mode>" << endl;
+        cerr << "Usage: ReSRW <dataset size><buffer size><filename><algorithm mode>" << endl;
     }
 
     int dataset_size = std::stoi(argv[1]);
@@ -217,21 +217,11 @@ float generateRand(int rmax)
 
 /**
  * create the dataset.
- * omit the vector which is not necessary in C++
  * @param size: dataset size
  * @param filename
  */
 void createDataset(int size, const string& filename)
 {
-    /*
-     * Pseudocode:
-     * float v[DataSetSize];
-     * for i = 1 to DataSetSize
-     * {
-     *     v[i]=generateRand(100);
-     * }
-     */
-
     std::ofstream file;
     file.open(filename, ios::out | ios::trunc);
 

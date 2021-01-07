@@ -1,11 +1,11 @@
-# ReSoW
+# ReSRW
 
-ReSoW 是一个简单的性能测试程序，它可以从磁盘上读取数据，对数据进行处理（排序），然后将数据写回磁盘上。
+ReSRW 是一个简单又垃圾的性能测试程序，它可以从磁盘上读取数据，对数据进行处理（排序），然后将数据写回磁盘上。更多算法可以自行添加。
 
 # 用法
 
 ``` shell
-ReSoW (dataset size)(buffer size)(filename)(algorithm mode: qs|ss|is)
+ReSRW (dataset size)(buffer size)(filename)(algorithm mode: qs|ss|is)
 ```
 
 # 生成文件
@@ -18,6 +18,8 @@ ReSoW (dataset size)(buffer size)(filename)(algorithm mode: qs|ss|is)
 
 1. 开启 / 关闭编译器优化
 2. 选择不同算法
+3. 修改缓存大小（理论上）
+   * 不知道哪里写错了，居然不会对时间产生影响，佛了...
 
 # LICENSE
 
